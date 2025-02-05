@@ -1,0 +1,31 @@
+services:
+  jupyter:
+    build: ./docker/jupyter-sql
+    command:
+      - start-notebook.py
+      - --IdentityProvider.token=
+      - --PasswordIdentityProvider.hashed_password=
+    ports:
+      - "8888:8888"
+    networks:
+      - internal
+    volumes:
+      - ./notebooks:/home/jovyan/work
+  pg-na:
+    build: ./docker/postgres-17
+    hostname: pg_na
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      - internal
+
+  pg-western-europe:
+    build: ./docker/postgres-17
+    hostname: pg_western_europe
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      - internal
+
+networks:
+  internal: {}
